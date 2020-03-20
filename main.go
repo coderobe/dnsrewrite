@@ -15,7 +15,6 @@ func handleDnsRequest(targetUpstream Upstream) func(dns.ResponseWriter, *dns.Msg
 	log.Printf("Generating handler for %s -> %s", targetUpstream.Target, targetUpstream.At)
 	return func(w dns.ResponseWriter, r *dns.Msg) {
 		m := r.Copy()
-		m.Compress = false
 
 		in, _, err := client.Exchange(m, targetUpstream.At)
 		m.SetReply(r)

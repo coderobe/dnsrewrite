@@ -35,7 +35,19 @@ type Upstream struct {
 }
 type Conf struct {
 	Listen string
+	Net string
 	Upstreams []Upstream
+}
+
+func serve(addr string, net string) {
+	server := &dns.Server{Addr: addr, Net: net}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Fatalf("Failed to start server: %s ", err.Error())
+	}
+
+	defer server.Shutdown()
 }
 
 func main() {
@@ -57,13 +69,13 @@ func main() {
 	}
 
 	// start server
-	server := &dns.Server{Addr: c.Listen, Net: "udp"}
-	log.Printf("Responder at %s", c.Listen)
+	log.Printf("Responder at %s on %s", c.Listen, c.Net)
 	log.Printf("Proxying for %v upstreams", len(c.Upstreams))
-
-	err = server.ListenAndServe()
-	if err != nil {
-		log.Fatalf("Failed to start server: %s ", err.Error())
+	if c.Net == "both" {
+		go serve(c.Listen, "tcp")
+		serve(c.Listen, "udp")
+	} else {
+		serve(c.Listen, c.Net)
 	}
-	defer server.Shutdown()
 }
+

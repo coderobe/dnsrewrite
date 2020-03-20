@@ -5,7 +5,7 @@ import (
 	"os"
 	"io/ioutil"
 
-	"github.com/miekg/dns"
+	"github.com/coderobe/godns/v2"
 	"gopkg.in/yaml.v2"
 )
 

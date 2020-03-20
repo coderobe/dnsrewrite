@@ -9,7 +9,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var client = new(dns.Client)
+var client = &dns.Client{Net: "tcp"}
 
 func handleDnsRequest(targetUpstream Upstream) func(dns.ResponseWriter, *dns.Msg) {
 	log.Printf("Generating handler for %s -> %s", targetUpstream.Target, targetUpstream.At)

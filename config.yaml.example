@@ -1,0 +1,8 @@
+listen: "0.0.0.0:53"
+upstreams:
+  - target: "example.com."
+    at: "127.0.0.1:10053"
+  - target: "foo.bar.invalid."
+    at: "127.0.0.1:10054"
+  - target: "."
+    at: "127.0.0.1:10055"
